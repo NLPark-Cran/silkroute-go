@@ -1,0 +1,89 @@
+2026-08-16 16:55:12,837 [INFO] ============================================================
+2026-08-16 16:55:12,837 [INFO] 千问Arena Agent 启动
+2026-08-16 16:55:12,837 [INFO] 版本: 1.0.0
+2026-08-16 16:55:12,837 [INFO] 文本模型: qwen3.5-plus | 图像模型: wan2.7-image | 视频模型: happyhorse-1.1-t2v
+2026-08-16 16:55:12,837 [INFO] Prompt: 读取 /root/workspace/test0607/testabroad/task_data/Task_Data/Data_for_Users(2)/ 目录下目标商品的全部信息文件，提取指定内容，按规范生成输出文件并保存至 /tmp/test_output/
+2026-08-16 16:55:12,837 [INFO] ============================================================
+2026-08-16 16:55:12,838 [INFO] 输入目录: /root/workspace/test0607/testabroad/task_data/Task_Data/Data_for_Users/
+2026-08-16 16:55:12,838 [INFO] 输出目录: /tmp/test_output/
+2026-08-16 16:55:12,838 [INFO] [数据] 正在读取商品数据...
+2026-08-16 16:55:12,838 [ERROR] 未读取到任何商品数据文件，退出
+2026-08-16 16:56:43,198 [INFO] ============================================================
+2026-08-16 16:56:43,198 [INFO] 千问Arena Agent 启动
+2026-08-16 16:56:43,198 [INFO] 版本: 1.0.0
+2026-08-16 16:56:43,198 [INFO] 文本模型: qwen3.5-plus | 图像模型: wan2.7-image | 视频模型: happyhorse-1.1-t2v
+2026-08-16 16:56:43,198 [INFO] Prompt: 读取 /tmp/task_input/ 目录下目标商品的全部信息文件，提取指定内容，按规范生成输出文件并保存至 /tmp/test_output/
+2026-08-16 16:56:43,198 [INFO] ============================================================
+2026-08-16 16:56:43,199 [INFO] 输入目录: /tmp/task_input/
+2026-08-16 16:56:43,199 [INFO] 输出目录: /tmp/test_output/
+2026-08-16 16:56:43,199 [INFO] [数据] 正在读取商品数据...
+2026-08-16 16:56:43,199 [INFO]   读取成功: /tmp/task_input/product_info/product_basic.json
+2026-08-16 16:56:43,235 [INFO]   读取成功: /tmp/task_input/clothing_attributes.json
+2026-08-16 16:56:43,248 [INFO]   读取成功: /tmp/task_input/clothing_categories.json
+2026-08-16 16:56:43,249 [INFO]   额外文件: /tmp/task_input/product_info/product_9493156931235.json
+2026-08-16 16:56:43,250 [INFO]   额外文件: /tmp/task_input/product_info/product_9451226053560.json
+2026-08-16 16:56:43,250 [INFO]   额外文件: /tmp/task_input/product_info/product_8822221153828.json
+2026-08-16 16:56:43,252 [INFO]   额外文件: /tmp/task_input/product_info/product_8688570444629.json
+2026-08-16 16:56:43,252 [INFO]   额外文件: /tmp/task_input/product_info/product_8409262509816.json
+2026-08-16 16:56:43,253 [INFO]   额外文件: /tmp/task_input/product_info/product_6837006744133.json
+2026-08-16 16:56:43,253 [INFO]   额外文件: /tmp/task_input/product_info/product_6786311895552.json
+2026-08-16 16:56:43,254 [INFO]   额外文件: /tmp/task_input/product_info/product_5977010166484.json
+2026-08-16 16:56:43,254 [INFO]   额外文件: /tmp/task_input/product_info/product_5758364264251.json
+2026-08-16 16:56:43,255 [INFO]   额外文件: /tmp/task_input/product_info/product_5681480836479.json
+2026-08-16 16:56:43,255 [INFO]   额外文件: /tmp/task_input/product_info/product_3887087154767.json
+2026-08-16 16:56:43,256 [INFO]   额外文件: /tmp/task_input/product_info/product_basic.json
+2026-08-16 16:56:43,256 [INFO] [数据] 共读取 15 个数据源
+2026-08-16 16:56:43,286 [INFO] [文案] 正在生成英文文案...
+2026-08-16 16:57:36,629 [INFO]   已保存: product_description_en.txt (2976 字符)
+2026-08-16 16:57:36,629 [INFO] [文案] 正在生成韩文文案...
+2026-08-16 16:58:34,427 [INFO]   已保存: product_description_ko.txt (980 字符)
+2026-08-16 16:58:34,427 [INFO] [文案] 正在生成葡萄牙文文案...
+2026-08-16 16:59:29,451 [INFO]   已保存: product_description_pt.txt (1365 字符)
+2026-08-16 16:59:29,452 [INFO] [图片] 提交: main_image.png
+2026-08-16 16:59:30,119 [ERROR]   提交失败: HTTP Error 400: Bad Request
+2026-08-16 16:59:30,120 [INFO] [图片] 提交: detail_image_1.png
+2026-08-16 16:59:32,470 [ERROR]   提交失败: HTTP Error 400: Bad Request
+2026-08-16 16:59:32,470 [INFO] [图片] 提交: detail_image_2.png
+2026-08-16 16:59:32,934 [ERROR]   提交失败: HTTP Error 400: Bad Request
+2026-08-16 16:59:32,934 [INFO] [图片] 提交: detail_image_3.png
+2026-08-16 16:59:33,590 [ERROR]   提交失败: HTTP Error 400: Bad Request
+2026-08-16 16:59:33,591 [INFO] [图片] 提交: detail_image_4.png
+2026-08-16 16:59:35,837 [ERROR]   提交失败: HTTP Error 400: Bad Request
+2026-08-16 16:59:35,837 [INFO] [图片] 提交: detail_image_5.png
+2026-08-16 16:59:37,240 [ERROR]   提交失败: HTTP Error 400: Bad Request
+2026-08-16 16:59:37,241 [INFO] [视频] 提交视频生成任务...
+2026-08-16 16:59:37,550 [ERROR]   视频生成失败: HTTP Error 400: Bad Request
+2026-08-16 16:59:37,551 [INFO] [策略] 已保存: /tmp/test_output/strategy_document.txt
+2026-08-16 16:59:37,551 [INFO] ============================================================
+2026-08-16 16:59:37,551 [INFO] 全部任务完成！输出文件清单：
+2026-08-16 16:59:37,551 [INFO]   product_description_en.txt                 2,976 bytes
+2026-08-16 16:59:37,551 [INFO]   product_description_ko.txt                 1,784 bytes
+2026-08-16 16:59:37,551 [INFO]   product_description_pt.txt                 1,395 bytes
+2026-08-16 16:59:37,551 [INFO]   strategy_document.txt                      1,706 bytes
+2026-08-16 16:59:37,551 [INFO] ============================================================
+2026-08-16 17:03:53,213 [INFO] ============================================================
+2026-08-16 17:03:53,213 [INFO] 千问Arena Agent 启动
+2026-08-16 17:03:53,213 [INFO] 版本: 1.0.0
+2026-08-16 17:03:53,213 [INFO] 文本模型: qwen3.5-plus | 图像模型: qwen-image-3.0-pro | 视频模型: happyhorse-1.1-t2v
+2026-08-16 17:03:53,213 [INFO] Prompt: 读取 /tmp/task_input/ 目录下目标商品的全部信息文件，提取指定内容，按规范生成输出文件并保存至 /tmp/test_output2/
+2026-08-16 17:03:53,213 [INFO] ============================================================
+2026-08-16 17:03:53,214 [INFO] 输入目录: /tmp/task_input/
+2026-08-16 17:03:53,214 [INFO] 输出目录: /tmp/test_output2/
+2026-08-16 17:03:53,214 [INFO] [数据] 正在读取商品数据...
+2026-08-16 17:03:53,214 [INFO]   读取成功: /tmp/task_input/product_info/product_basic.json
+2026-08-16 17:03:53,249 [INFO]   读取成功: /tmp/task_input/clothing_attributes.json
+2026-08-16 17:03:53,263 [INFO]   读取成功: /tmp/task_input/clothing_categories.json
+2026-08-16 17:03:53,264 [INFO]   额外文件: /tmp/task_input/product_info/product_9493156931235.json
+2026-08-16 17:03:53,264 [INFO]   额外文件: /tmp/task_input/product_info/product_9451226053560.json
+2026-08-16 17:03:53,265 [INFO]   额外文件: /tmp/task_input/product_info/product_8822221153828.json
+2026-08-16 17:03:53,266 [INFO]   额外文件: /tmp/task_input/product_info/product_8688570444629.json
+2026-08-16 17:03:53,267 [INFO]   额外文件: /tmp/task_input/product_info/product_8409262509816.json
+2026-08-16 17:03:53,267 [INFO]   额外文件: /tmp/task_input/product_info/product_6837006744133.json
+2026-08-16 17:03:53,267 [INFO]   额外文件: /tmp/task_input/product_info/product_6786311895552.json
+2026-08-16 17:03:53,268 [INFO]   额外文件: /tmp/task_input/product_info/product_5977010166484.json
+2026-08-16 17:03:53,268 [INFO]   额外文件: /tmp/task_input/product_info/product_5758364264251.json
+2026-08-16 17:03:53,269 [INFO]   额外文件: /tmp/task_input/product_info/product_5681480836479.json
+2026-08-16 17:03:53,269 [INFO]   额外文件: /tmp/task_input/product_info/product_3887087154767.json
+2026-08-16 17:03:53,269 [INFO]   额外文件: /tmp/task_input/product_info/product_basic.json
+2026-08-16 17:03:53,270 [INFO] [数据] 共读取 15 个数据源
+2026-08-16 17:03:53,296 [INFO] [文案] 正在生成英文文案...
