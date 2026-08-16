@@ -1,0 +1,10 @@
+.venv/
+.env
+data/
+__pycache__/
+*.pyc
+app/static/generated/
+task_data/
+docs_auth/
+*.zip-copy
+Task_Data*.zip

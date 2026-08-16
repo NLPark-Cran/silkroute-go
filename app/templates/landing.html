@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>SilkRoute Go · 一键出海 Agent</title>
+<link rel="stylesheet" href="/static/style.css">
+</head>
+<body class="landing">
+<nav class="nav">
+  <div class="brand">丝路由 <span>SilkRoute Go</span></div>
+  <div>
+    {% if user %}
+      <a class="btn ghost" href="/studio">进入工作台</a>
+      <a class="btn ghost" href="/logout">退出 · {{ user['nickname'] }}</a>
+    {% else %}
+      <a class="btn gold" href="/login/watcha">观猹账号一键登录</a>
+    {% endif %}
+  </div>
+</nav>
+
+<header class="hero">
+  <div class="hero-inner">
+    <p class="kicker">观猹 × 千问 AI 平台 · Go Live 创造营</p>
+    <h1>一件商品，<br>一个下午，<br><em>走上全球货架。</em></h1>
+    <p class="sub">SilkRoute Go 是一个出海 Agent：选定商品与市场，自动完成市场洞察、多语言货架文案、
+      视觉素材生成，并实时发布可公开访问的海外货架页 —— 不是 Demo，是真的 Go Live。</p>
+    <div class="cta-row">
+      <a class="btn gold big" href="{% if user %}/studio{% else %}/login/watcha{% endif %}">立即让我的商品出海 →</a>
+      <a class="btn ghost big" href="#how">看看它怎么工作</a>
+    </div>
+  </div>
+</header>
+
+<section class="steps" id="how">
+  <h2>从一个 Skill 出发</h2>
+  <div class="grid4">
+    <div class="card"><b>01 · 市场洞察</b><p>qwen3.8-max 分析目标市场人群、价格带与卖点切入。</p></div>
+    <div class="card"><b>02 · 货架文案</b><p>生成地道英文标题、五点描述、SEO 关键词与品牌故事。</p></div>
+    <div class="card"><b>03 · 视觉素材</b><p>qwen-image-3.0-pro 直出主图、生活场景图与卖点信息图。</p></div>
+    <div class="card"><b>04 · Go Live</b><p>一键发布公开货架页，附二维码，迎接第一位真实用户。</p></div>
+  </div>
+</section>
+
+{% if listings %}
+<section class="steps">
+  <h2>已上线的货架</h2>
+  <div class="grid4">
+    {% for l in listings %}
+    <a class="card link" href="/p/{{ l['slug'] }}"><b>🌏 /p/{{ l['slug'][:28] }}</b><p>已累积 {{ l['views'] }} 次海外访问</p></a>
+    {% endfor %}
+  </div>
+</section>
+{% endif %}
+
+<footer class="foot">SilkRoute Go · 杭州 · Build with Qwen · Powered by 千问AI平台 & 观猹</footer>
+</body>
+</html>

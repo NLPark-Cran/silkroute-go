@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>{{ copy.get('title','Silk Scarf') }} | {{ copy.get('brand','SilkRoute') }}</title>
+<link rel="stylesheet" href="/static/style.css">
+</head>
+<body class="shelf">
+<nav class="nav dark">
+  <div class="brand en">{{ copy.get('brand','SilkRoute') }} <span>Crafted in Hangzhou</span></div>
+  <div><a class="btn gold" href="#buy">Add to Cart</a></div>
+</nav>
+
+<main class="shelf-wrap">
+  <section class="gallery">
+    {% if images.get('hero') %}<img src="{{ images['hero'] }}" alt="hero" class="main-img">{% endif %}
+    <div class="thumbs">
+      {% if images.get('lifestyle') %}<img src="{{ images['lifestyle'] }}" alt="lifestyle">{% endif %}
+      {% if images.get('infographic') %}<img src="{{ images['infographic'] }}" alt="details">{% endif %}
+    </div>
+  </section>
+
+  <section class="buybox" id="buy">
+    <p class="crumb">{{ copy.get('brand','SilkRoute') }} · Silk Collection</p>
+    <h1>{{ copy.get('title') }}</h1>
+    <p class="subtitle">{{ copy.get('subtitle','') }}</p>
+    <div class="stars">★★★★★ {% if avg %}<b>{{ avg }}</b> · {{ feedback|length }} reviews{% else %}<span class="muted">New arrival — be the first reviewer</span>{% endif %}</div>
+    <div class="price"><b>${{ '%.2f'|format(copy.get('price_usd', 39.99)) }}</b>
+      {% if copy.get('compare_at_usd') %}<s>${{ '%.2f'|format(copy.get('compare_at_usd')) }}</s>{% endif %}
+      <span class="ship">Free worldwide shipping</span></div>
+    <ul class="bullets">
+      {% for b in copy.get('bullets', []) %}<li>{{ b }}</li>{% endfor %}
+    </ul>
+    <button class="btn gold big full" onclick="alert('Demo checkout — the shelf is LIVE, checkout integration ships next sprint!')">Add to Cart</button>
+    <div class="qr-row">
+      <img src="data:image/png;base64,{{ qr_b64 }}" alt="qr" class="qr">
+      <p class="muted">Scan to open this live shelf on your phone.<br>{{ l['views'] }} visits so far.</p>
+    </div>
+  </section>
+</main>
+
+<section class="desc-wrap">
+  <div class="desc-col">
+    <h2>About this piece</h2>
+    {% for para in copy.get('description','').split('\n\n') %}<p>{{ para }}</p>{% endfor %}
+    <h2>Our story</h2>
+    <p>{{ copy.get('story','') }}</p>
+  </div>
+  {% if images.get('lifestyle') %}<img src="{{ images['lifestyle'] }}" class="desc-img">{% endif %}
+</section>
+
+{% if images.get('infographic') %}
+<section class="wide-img"><img src="{{ images['infographic'] }}"></section>
+{% endif %}
+
+<section class="reviews">
+  <h2>Customer Reviews {% if avg %}· ★ {{ avg }}{% endif %}</h2>
+  <form id="fb-form" class="fb-form">
+    <div class="fb-row">
+      <select name="stars" id="fb-stars">
+        <option value="5">★★★★★</option><option value="4">★★★★</option>
+        <option value="3">★★★</option><option value="2">★★</option><option value="1">★</option>
+      </select>
+      <input name="name" id="fb-name" placeholder="Your name" maxlength="40">
+    </div>
+    <textarea name="comment" id="fb-comment" placeholder="How does it feel? Tell the maker." maxlength="300"></textarea>
+    <button class="btn gold" type="submit">Submit review</button>
+  </form>
+  <div id="fb-list">
+    {% for f in feedback %}
+    <div class="fb-item"><b>{{ '★'|int * 0 }}{{ '★★★★★'[:f['stars']] }}</b> <span>{{ f['name'] }}</span><p>{{ f['comment'] }}</p></div>
+    {% endfor %}
+  </div>
+</section>
+
+<footer class="foot dark">
+  {{ copy.get('brand','SilkRoute') }} · Go Live with 千问AI平台 × 观猹 ·
+  Keywords: {{ copy.get('keywords', [])|join(', ') }}
+</footer>
+
+<script>
+document.getElementById('fb-form').addEventListener('submit', async (e) => {
+  e.preventDefault();
+  const fd = new FormData(e.target);
+  await fetch('/api/feedback/{{ l["slug"] }}', {method: 'POST', body: fd});
+  location.reload();
+});
+</script>
+</body>
+</html>

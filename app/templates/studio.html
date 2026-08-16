@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>工作台 · SilkRoute Go</title>
+<link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+<nav class="nav">
+  <a class="brand" href="/">丝路由 <span>SilkRoute Go</span></a>
+  <div>
+    <span class="hi">👋 {{ user['nickname'] }}</span>
+    <a class="btn ghost" href="/logout">退出</a>
+  </div>
+</nav>
+
+<main class="wrap">
+  <h1>出海工作台</h1>
+  <p class="muted">选择一件商品与目标市场，Agent 将自动完成洞察 → 文案 → 视觉 → 上架。</p>
+
+  <form id="gen-form" class="panel">
+    <label>选择商品</label>
+    <select name="product_id" id="product_id">
+      {% for p in products %}
+      <option value="{{ p['id'] }}">{% if p['source']=='hero' %}⭐{% else %}📦{% endif %} {{ p['title_zh'][:42] }}</option>
+      {% endfor %}
+    </select>
+    <label>目标市场</label>
+    <select name="market" id="market">
+      {% for key, m in markets.items() %}
+      <option value="{{ key }}" {% if key=='us' %}selected{% endif %}>{{ m['name'] }} · {{ m['style'] }}</option>
+      {% endfor %}
+    </select>
+    <button class="btn gold big" type="submit" id="go-btn">🚀 开始出海（约 1-2 分钟）</button>
+  </form>
+
+  <div id="job-box" class="panel hidden">
+    <h3 id="job-title">Agent 正在工作…</h3>
+    <ul id="step-list" class="steplist"></ul>
+    <div id="job-result"></div>
+  </div>
+
+  {% if jobs %}
+  <h2>历史任务</h2>
+  <div class="panel">
+    {% for j in jobs %}
+    <div class="jobrow">
+      <span class="badge {{ j['status'] }}">{{ j['status'] }}</span>
+      <span class="muted">{{ j['id'] }} · {{ j['market'] }}</span>
+      {% if j['listing_slug'] %}<a href="/p/{{ j['listing_slug'] }}">查看货架 →</a>{% endif %}
+      {% if j['error'] %}<span class="err">{{ j['error'][:120] }}</span>{% endif %}
+    </div>
+    {% endfor %}
+  </div>
+  {% endif %}
+</main>
+
+<script>
+const form = document.getElementById('gen-form');
+form.addEventListener('submit', async (e) => {
+  e.preventDefault();
+  document.getElementById('go-btn').disabled = true;
+  const fd = new FormData(form);
+  const r = await fetch('/api/generate', {method: 'POST', body: fd});
+  const d = await r.json();
+  if (d.error) { alert(d.error); location.href = '/login/watcha'; return; }
+  poll(d.job_id);
+});
+
+async function poll(jobId) {
+  const box = document.getElementById('job-box');
+  box.classList.remove('hidden');
+  const t = setInterval(async () => {
+    const r = await fetch('/api/jobs/' + jobId);
+    const j = await r.json();
+    const ul = document.getElementById('step-list');
+    ul.innerHTML = j.steps.map(s =>
+      `<li class="${s.status}"><b>${s.label}</b><span>${s.detail||''}</span></li>`).join('');
+    if (j.status === 'done') {
+      clearInterval(t);
+      document.getElementById('job-title').textContent = '✅ 已 Go Live！';
+      document.getElementById('job-result').innerHTML =
+        `<a class="btn gold big" href="/p/${j.listing_slug}" target="_blank">🌏 打开海外货架页 /p/${j.listing_slug}</a>`;
+      document.getElementById('go-btn').disabled = false;
+    } else if (j.status === 'failed') {
+      clearInterval(t);
+      document.getElementById('job-title').textContent = '❌ 任务失败';
+      document.getElementById('job-result').innerHTML = `<p class="err">${j.error||''}</p>`;
+      document.getElementById('go-btn').disabled = false;
+    }
+  }, 2000);
+}
+</script>
+</body>
+</html>
