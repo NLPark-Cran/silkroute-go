@@ -77,20 +77,34 @@ async def run_pipeline(job_id, product_id, market):
         ], max_tokens=2500)
         set_step(1, "done", f"文案完成：{copy.get('title', '')[:60]}")
 
-        # Step 3: visuals
+        # Step 3: visuals（完全由当前商品文案驱动，不写死品类）
         set_step(2, "running", "qwen-image-3.0-pro 生成主图/场景图/卖点图…")
         os.makedirs(GEN_DIR, exist_ok=True)
+        ptitle = copy.get('title', title_zh)
+        brand = copy.get('brand', 'the brand')
+        # 从五点描述提取 3-4 个短卖点词做信息图标注
+        feats = []
+        for b in copy.get('bullets', []):
+            w = ' '.join(str(b).split()[:5]).strip('.,;:')
+            if w:
+                feats.append(w)
+            if len(feats) >= 4:
+                break
+        feat_txt = "', '".join(feats) if feats else "Premium Quality", "Easy to Style"
         img_prompts = [
             ("hero", "1024*1024",
-             f"Professional e-commerce hero shot: {copy.get('title','luxury silk scarf')}. "
-             "A luxurious Hangzhou mulberry silk scarf elegantly draped and folded on a clean warm ivory background, "
-             "soft studio lighting, subtle shadow, photorealistic product photography, high-end Amazon main image style, centered composition"),
+             f"Professional e-commerce hero shot of: {ptitle}. "
+             "The exact product elegantly displayed on a clean warm ivory background, "
+             "soft studio lighting, subtle shadow, photorealistic product photography, "
+             "high-end marketplace main image style, centered composition, no text, no watermark"),
             ("lifestyle", "1024*1280",
-             f"Lifestyle photo for {copy.get('brand','a silk brand')}: an elegant woman in her 30s wearing a luxurious printed silk scarf, "
-             "walking through a sunlit modern city street, golden hour, shallow depth of field, editorial fashion photography, warm film tones"),
+             f"Lifestyle photo for {brand}: an elegant model wearing or using the exact product '{ptitle}', "
+             "in a sunlit modern city street, golden hour, shallow depth of field, "
+             "editorial fashion photography, warm film tones, no text, no watermark"),
             ("infographic", "1024*1024",
-             f"E-commerce infographic image for a premium mulberry silk scarf: flat lay of the scarf with elegant thin callout lines and short English labels "
-             f"highlighting '100% Mulberry Silk', 'Hand-rolled Edges', '6A Grade', '90 x 90 cm'. Clean minimal layout, ivory and deep green palette, small crisp English text, premium brand aesthetic"),
+             f"E-commerce infographic image for: {ptitle}. Flat lay of the exact product with elegant thin "
+             f"callout lines and short crisp English labels reading '{feat_txt}'. "
+             "Clean minimal layout, ivory and deep green palette, small sharp English text, premium brand aesthetic"),
         ]
         images = {}
         for key, size, prompt in img_prompts:
