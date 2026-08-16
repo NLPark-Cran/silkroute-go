@@ -87,3 +87,17 @@
 2026-08-16 17:03:53,269 [INFO]   额外文件: /tmp/task_input/product_info/product_basic.json
 2026-08-16 17:03:53,270 [INFO] [数据] 共读取 15 个数据源
 2026-08-16 17:03:53,296 [INFO] [文案] 正在生成英文文案...
+2026-08-16 17:04:50,737 [INFO]   已保存: product_description_en.txt (1302 字符)
+2026-08-16 17:04:50,737 [INFO] [文案] 正在生成韩文文案...
+2026-08-16 17:06:15,287 [INFO]   已保存: product_description_ko.txt (1339 字符)
+2026-08-16 17:06:15,287 [INFO] [文案] 正在生成葡萄牙文文案...
+2026-08-16 17:07:38,588 [INFO]   已保存: product_description_pt.txt (1270 字符)
+2026-08-16 17:07:38,588 [INFO] [图片] 生成: main_image.png
+2026-08-16 17:08:44,144 [INFO]   下载 -> main_image.png
+2026-08-16 17:08:45,046 [INFO]   完成: 1,021,570 bytes
+2026-08-16 17:08:45,046 [INFO]   已保存: main_image.png
+2026-08-16 17:08:45,047 [INFO] [图片] 生成: detail_image_1.png
+2026-08-16 17:09:48,420 [INFO]   下载 -> detail_image_1.png
+2026-08-16 17:09:48,994 [INFO]   完成: 1,027,912 bytes
+2026-08-16 17:09:48,994 [INFO]   已保存: detail_image_1.png
+2026-08-16 17:09:48,994 [INFO] [图片] 生成: detail_image_2.png

@@ -69,7 +69,7 @@
   </form>
   <div id="fb-list">
     {% for f in feedback %}
-    <div class="fb-item"><b>{{ '★'|int * 0 }}{{ '★★★★★'[:f['stars']] }}</b> <span>{{ f['name'] }}</span><p>{{ f['comment'] }}</p></div>
+    <div class="fb-item"><b>{{ '★★★★★'[:f['stars']] }}</b> <span>{{ f['name'] }}</span><p>{{ f['comment'] }}</p></div>
     {% endfor %}
   </div>
 </section>
