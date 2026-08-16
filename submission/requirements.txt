@@ -1,1 +1,1 @@
-openai
+# SilkRoute Go Agent 仅使用 Python 标准库，无第三方依赖

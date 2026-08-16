@@ -183,33 +183,50 @@ def brief_product_text(data, limit=8000):
 
 
 # ============================================================
-# 文本模型调用（OpenAI 兼容端点，带降级链）
+# 文本模型调用（纯标准库，零三方依赖 → ZIP 无需打包任何依赖）
+# 通过 OPENAI_BASE_URL 兼容端点，带降级链与限流重试
 # ============================================================
 
 def call_llm(system_prompt, user_prompt, temperature=0.7, max_tokens=4096):
-    from openai import OpenAI  # 延迟导入，保证 --version 无需依赖
-    client = OpenAI(api_key=API_KEY, base_url=OPENAI_BASE, timeout=240)
     last_err = None
     for model in TEXT_MODELS:
-        try:
-            resp = client.chat.completions.create(
-                model=model,
-                messages=[
-                    {"role": "system", "content": system_prompt},
-                    {"role": "user", "content": user_prompt},
-                ],
-                temperature=temperature,
-                max_tokens=max_tokens,
-            )
-            text = resp.choices[0].message.content or ""
-            text = re.sub(r"<think>.*?</think>", "", text, flags=re.DOTALL).strip()
-            if text:
-                if model != TEXT_MODELS[0]:
-                    log.info(f"  （已降级到 {model}）")
-                return text
-        except Exception as e:
-            log.warning(f"  文本模型 {model} 调用失败: {str(e)[:200]}")
-            last_err = e
+        for attempt in range(2):
+            try:
+                body = {
+                    "model": model,
+                    "messages": [
+                        {"role": "system", "content": system_prompt},
+                        {"role": "user", "content": user_prompt},
+                    ],
+                    "temperature": temperature,
+                    "max_tokens": max_tokens,
+                }
+                req = urllib.request.Request(
+                    f"{OPENAI_BASE}/chat/completions",
+                    data=json.dumps(body).encode("utf-8"),
+                    headers={"Authorization": f"Bearer {API_KEY}",
+                             "Content-Type": "application/json"})
+                try:
+                    with urllib.request.urlopen(req, timeout=240) as r:
+                        resp = json.loads(r.read())
+                except urllib.error.HTTPError as e:
+                    detail = e.read().decode("utf-8", "ignore")[:300]
+                    # 限流（429）等待后重试
+                    if e.code == 429 and attempt == 0:
+                        log.warning(f"  {model} 限流，20s 后重试")
+                        time.sleep(20)
+                        continue
+                    raise RuntimeError(f"HTTP {e.code}: {detail}")
+                text = resp["choices"][0]["message"]["content"] or ""
+                text = re.sub(r"<think>.*?</think>", "", text, flags=re.DOTALL).strip()
+                if text:
+                    if model != TEXT_MODELS[0]:
+                        log.info(f"  （已降级到 {model}）")
+                    return text
+            except Exception as e:
+                log.warning(f"  文本模型 {model} 调用失败: {str(e)[:200]}")
+                last_err = e
+                break
     raise RuntimeError(f"全部文本模型不可用: {last_err}")
 
 
@@ -314,10 +331,13 @@ def step_insight(product_data):
 def step_descriptions(product_data, output_dir, insight):
     data_text = brief_product_text(product_data)
     title = get_product_title(product_data)
+    # 类目/属性词表：让文案与之精确匹配（评分维度：类目属性 18%）
+    cats = json.dumps(product_data.get("clothing_categories", {}), ensure_ascii=False)[:800]
+    attrs = json.dumps(product_data.get("clothing_attributes", {}), ensure_ascii=False)[:800]
     market_notes = {
-        "English": "面向欧美市场（Amazon/Etsy 调性）：强调品质、材质与送礼场景",
-        "Korean": "面向韩国市场：强调时尚感、穿搭建议与潮流元素",
-        "Portuguese": "面向巴西/葡萄牙市场：突出性价比、舒适度与风格亮点",
+        "English": "面向美国市场（Amazon/Etsy 调性）：强调品质、材质与送礼场景；尺码用英寸（inch）表示并附 US 码换算，价格建议用 USD",
+        "Korean": "面向韩国市场：强调时尚感、穿搭建议；尺码用韩国习惯（44/55/66 或 KR 码）表示，价格建议用 KRW",
+        "Portuguese": "面向巴西市场：突出性价比、舒适度；尺码用厘米（cm）表示并附 BR 码换算，价格建议用 BRL",
     }
     languages = [
         ("English", "英文", "product_description_en.txt"),
@@ -329,12 +349,19 @@ def step_descriptions(product_data, output_dir, insight):
         log.info(f"[文案] 正在生成{label}文案...")
         try:
             system = (
-                f"你是跨境电商文案专家。请用纯正地道的{lang}撰写商品上架文案。"
-                "文案须包含：商品标题、五点卖点描述、SKU 信息（尺码/颜色等变体）、"
-                "商品属性（材质/风格/场景）、平台名称与商品 ID/URL（如数据中有）、"
+                f"你是跨境电商文案专家。请用纯正地道的{lang}撰写 AliExpress 商品上架文案。"
+                "\n【文案结构】商品标题、五点卖点描述、SKU 信息（尺码/颜色等变体及其分解项）、"
+                "商品属性（材质/风格/场景）、数据来源平台名称与商品 ID/URL（如数据中有）、"
                 "以及配套素材文件名介绍：main_image.png（主图）、detail_image_1~5.png"
                 "（详情图）、product_video.mp4（展示视频）。"
-                f"{market_notes[lang]}。"
+                f"\n【本地化】{market_notes[lang]}。"
+                "\n【内容合规】遵守 AliExpress 内容政策：禁止使用绝对化用语"
+                "（best/No.1/100%/guaranteed/perfect 等），禁止未经证实的功效描述"
+                "（抗菌/医疗/减肥等），不使用无法验证的认证宣称。"
+                "\n【事实一致】所有材质、产地、规格、尺码必须严格来自输入数据；"
+                "数据中没有的信息宁可不写，也禁止虚构。"
+                f"\n【类目属性】商品类目与属性词必须从以下平台词表中精确选取，不要自造："
+                f"\n类目表：{cats}\n属性表：{attrs}"
             )
             user = (
                 f"商品标题：{title}\n"
@@ -377,26 +404,27 @@ def step_images(product_data, output_dir, insight):
         if m:
             style_hint = " Visual style: " + m.group(1)[:150]
 
+    NOISE = ", no text, no watermark, no logo, no label, centered composition"
     specs = [
         ("main_image.png",
-         f"{title}, professional e-commerce hero product photo, clean ivory "
-         "background, soft studio lighting, high resolution, centered composition, "
-         "photorealistic, premium marketplace main image"),
+         f"{title}, professional e-commerce hero product photo, clean white "
+         "background, soft studio lighting, high resolution, photorealistic, "
+         "marketplace main image, product fills 85% of frame" + NOISE),
         ("detail_image_1.png",
          f"{title}, front view full display, e-commerce detail photo, "
-         "clean background, professional lighting, true colors"),
+         "clean background, professional lighting, true colors" + NOISE),
         ("detail_image_2.png",
          f"{title}, alternate angle and styling details, e-commerce photo, "
-         "clean background, consistent product appearance"),
+         "clean background, consistent product appearance" + NOISE),
         ("detail_image_3.png",
          f"{title}, extreme close-up of material texture and craftsmanship, "
-         "macro photography, crisp fabric or surface details"),
+         "macro photography, crisp fabric or surface details, no text, no watermark"),
         ("detail_image_4.png",
          f"{title}, lifestyle photo, elegant model using or wearing the product, "
-         "natural golden-hour lighting, editorial fashion style"),
+         "natural golden-hour lighting, editorial fashion style, no text, no watermark"),
         ("detail_image_5.png",
          f"{title}, flat lay arrangement with matching accessories, top-down view, "
-         "aesthetic premium composition, magazine style"),
+         "aesthetic premium composition, magazine style, no text, no watermark"),
     ]
 
     ok = 0
@@ -475,15 +503,21 @@ def step_strategy(product_data, output_dir, insight, stats):
 三、市场洞察摘要
 {insight or '（本次运行未生成，使用默认市场假设）'}
 
-四、文案策略
-- 英文(en)：欧美市场，Amazon/Etsy 调性，强调品质、材质与送礼场景
-- 韩文(ko)：韩国市场，强调时尚感、穿搭建议与潮流元素
-- 葡语(pt)：巴西/葡萄牙市场，突出性价比、舒适度与风格亮点
-所有文案均包含：商品标题、五点卖点、SKU 变体、商品属性、平台名称/ID、
+四、文案策略（对标评分维度设计）
+- 内容合规：系统提示词内置 AliExpress 内容政策约束——禁止绝对化用语、
+  未经证实的功效描述与认证宣称
+- 事实一致：所有材质/产地/规格严格来自输入数据，数据没有的信息宁可不写
+- 类目属性：商品类目与属性词从 clothing_categories.json 与
+  clothing_attributes.json 平台词表中精确选取，不自造
+- 本地化适配：英文（美国）用英寸+US 码+USD；韩文用韩国尺码习惯+KRW；
+  葡文（巴西）用厘米+BR 码+BRL
+- 三个语言版本：英文(en) 欧美 Amazon/Etsy 调性 / 韩文(ko) 韩国时尚穿搭导向 /
+  葡语(pt) 巴西性价比导向
+所有文案均包含：商品标题、五点卖点、SKU 变体及分解项、商品属性、平台名称/ID、
 配套图片与视频文件名及说明。
 
-五、视觉素材策略
-- main_image.png    ：象牙白底主图，居中构图，高级电商主图风格
+五、视觉素材策略（全部 1024x1024，无文字无水印无 logo）
+- main_image.png    ：纯白底主图，商品占画面 85%，居中构图
 - detail_image_1.png：正面完整展示
 - detail_image_2.png：侧面/背面与造型细节
 - detail_image_3.png：材质工艺微距特写
@@ -492,7 +526,8 @@ def step_strategy(product_data, output_dir, insight, stats):
 - product_video.mp4 ：商品旋转展示短片，环绕运镜
 
 六、可靠性设计
-- 文本模型三级降级链，单模型故障不中断流程
+- 零三方依赖：全部使用 Python 标准库实现，ZIP 无需打包依赖，与评测环境完全解耦
+- 文本模型三级降级链，429 限流自动等待重试，单模型故障不中断流程
 - 每张图片失败自动以简化提示词重试一次
 - 任一关键产出缺失时进程以非 0 退出码结束，便于平台判定
 
