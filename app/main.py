@@ -30,6 +30,9 @@ BASE_URL = os.environ.get("BASE_URL", "http://localhost:18100")
 
 app = FastAPI(title="SilkRoute Go — 一键出海 Agent", docs_url=None)
 app.mount("/static", StaticFiles(directory=os.path.join(BASE_DIR, "static")), name="static")
+_pitch = os.path.join(ROOT_DIR, "pitch")
+if os.path.isdir(_pitch):
+    app.mount("/pitch", StaticFiles(directory=_pitch, html=True), name="pitch")
 templates = Jinja2Templates(directory=os.path.join(BASE_DIR, "templates"))
 
 
