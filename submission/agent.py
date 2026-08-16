@@ -99,15 +99,22 @@ def parse_args():
 
 
 def extract_paths(prompt):
-    """从自然语言 prompt 中提取输入/输出目录。"""
-    inp = re.search(r"(?:读取|输入)[:：]?\s*(/[^\s，。；]+?)/?\s*目录", prompt)
-    out = re.search(r"(?:保存至|保存到|输出到?|输出)[:：]?\s*(/[^\s，。；]+?)/?\s*(?:。|$|，|；)", prompt)
+    """从自然语言 prompt 中提取输入/输出目录。
+    兼容：markdown 反引号/引号包裹路径、全角标点、「根据/中的数据」「输出到」等表述。
+    官方机测 Prompt 原文：读取 `/home/user/ws/input/` 目录下目标商品的全部信息文件，
+    提取指定内容，按规范生成输出文件并保存至 `/home/user/ws/output/`。
+    """
+    p = (prompt.replace("`", " ").replace("\u2018", " ").replace("\u2019", " ")
+               .replace("\u201c", " ").replace("\u201d", " ")
+               .replace("'", " ").replace('"', " "))
+    inp = re.search(r"(?:读取|输入|根据|基于)[:\s]*(/[^\s，。；]+?)/?\s*(?:目录|中|下)", p)
+    out = re.search(r"(?:保存至|保存到|输出到|输出|生成到?)[:\s]*(/[^\s，。；]+?)/?(?:。|$|，|；|\s)", p)
     if inp and out:
         return inp.group(1).rstrip("/") + "/", out.group(1).rstrip("/") + "/"
     # 兜底：按出现顺序取所有绝对路径，第一个输入、最后一个输出
-    paths = re.findall(r"/[^\s，。；]+", prompt)
+    paths = [x.rstrip("/") for x in re.findall(r"/[^\s，。；`]+", p)]
     if len(paths) >= 2:
-        return paths[0].rstrip("/") + "/", paths[-1].rstrip("/") + "/"
+        return paths[0] + "/", paths[-1] + "/"
     log.warning("无法从 prompt 中解析路径，使用默认值")
     return "/home/user/ws/input/", "/home/user/ws/output/"
 
@@ -362,6 +369,10 @@ def step_descriptions(product_data, output_dir, insight):
                 "数据中没有的信息宁可不写，也禁止虚构。"
                 f"\n【类目属性】商品类目与属性词必须从以下平台词表中精确选取，不要自造："
                 f"\n类目表：{cats}\n属性表：{attrs}"
+                "\n【结构化区块】文案末尾必须用如下固定标签逐行输出（供机器解析，标签本身用英文）："
+                "\n[Category] 与平台类目表精确匹配的叶子类目名称"
+                "\n[Attributes] key: value 逐行列出商品属性（从平台属性词表取值）"
+                "\n[Sale Attributes] 逐行列出销售属性/规格分类值（如 Color: xxx, Size: XL）"
             )
             user = (
                 f"商品标题：{title}\n"
@@ -455,7 +466,7 @@ def step_video(product_data, output_dir):
     prompt = (
         f"{title}, premium product showcase video, slow rotating display, "
         "smooth camera orbit, soft studio lighting, elegant e-commerce style, "
-        "consistent product appearance"
+        "consistent product appearance, no text, no watermark, no subtitles"
     )
     log.info("[视频] 提交视频生成任务...")
     try:
