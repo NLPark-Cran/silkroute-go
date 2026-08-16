@@ -1,0 +1,111 @@
+2026-08-16 17:23:35,594 [INFO] ============================================================
+2026-08-16 17:23:35,594 [INFO] SilkRoute Go Agent 启动
+2026-08-16 17:23:35,594 [INFO] 版本: 1.1.0
+2026-08-16 17:23:35,594 [INFO] 文本: qwen3.8-max/qwen3.7-plus/qwen3.5-plus | 图像: qwen-image-3.0-pro | 视频: happyhorse-1.1-t2v
+2026-08-16 17:23:35,594 [INFO] Prompt: 读取 /root/workspace/test0607/testabroad/task_data/Task_Data/Data_for_Users(2)/ 目录下目标商品的全部信息文件，提取指定内容，按规范生成输出文件并保存至 /tmp/test_output3/
+2026-08-16 17:23:35,594 [INFO] ============================================================
+2026-08-16 17:23:35,595 [INFO] 输入目录: /root/workspace/test0607/testabroad/task_data/Task_Data/Data_for_Users(2)/
+2026-08-16 17:23:35,595 [INFO] 输出目录: /tmp/test_output3/
+2026-08-16 17:23:35,596 [INFO] [数据] 正在读取商品数据...
+2026-08-16 17:23:35,626 [INFO]   读取成功: /root/workspace/test0607/testabroad/task_data/Task_Data/Data_for_Users(2)/clothing_attributes.json
+2026-08-16 17:23:35,641 [INFO]   读取成功: /root/workspace/test0607/testabroad/task_data/Task_Data/Data_for_Users(2)/clothing_categories.json
+2026-08-16 17:23:35,643 [INFO]   额外文件: /root/workspace/test0607/testabroad/task_data/Task_Data/Data_for_Users(2)/product_info/product_5681480836479.json
+2026-08-16 17:23:35,644 [INFO]   额外文件: /root/workspace/test0607/testabroad/task_data/Task_Data/Data_for_Users(2)/product_info/product_3887087154767.json
+2026-08-16 17:23:35,644 [INFO]   额外文件: /root/workspace/test0607/testabroad/task_data/Task_Data/Data_for_Users(2)/product_info/product_8822221153828.json
+2026-08-16 17:23:35,646 [INFO]   额外文件: /root/workspace/test0607/testabroad/task_data/Task_Data/Data_for_Users(2)/product_info/product_6837006744133.json
+2026-08-16 17:23:35,647 [INFO]   额外文件: /root/workspace/test0607/testabroad/task_data/Task_Data/Data_for_Users(2)/product_info/product_8409262509816.json
+2026-08-16 17:23:35,648 [INFO]   额外文件: /root/workspace/test0607/testabroad/task_data/Task_Data/Data_for_Users(2)/product_info/product_9451226053560.json
+2026-08-16 17:23:35,649 [INFO]   额外文件: /root/workspace/test0607/testabroad/task_data/Task_Data/Data_for_Users(2)/product_info/product_6786311895552.json
+2026-08-16 17:23:35,650 [INFO]   额外文件: /root/workspace/test0607/testabroad/task_data/Task_Data/Data_for_Users(2)/product_info/product_5758364264251.json
+2026-08-16 17:23:35,651 [INFO]   额外文件: /root/workspace/test0607/testabroad/task_data/Task_Data/Data_for_Users(2)/product_info/product_9493156931235.json
+2026-08-16 17:23:35,652 [INFO]   额外文件: /root/workspace/test0607/testabroad/task_data/Task_Data/Data_for_Users(2)/product_info/product_5977010166484.json
+2026-08-16 17:23:35,655 [INFO]   额外文件: /root/workspace/test0607/testabroad/task_data/Task_Data/Data_for_Users(2)/product_info/product_8688570444629.json
+2026-08-16 17:23:35,655 [INFO] [数据] 共读取 13 个数据源
+2026-08-16 17:23:35,655 [INFO] [洞察] 目标市场分析中...
+2026-08-16 17:24:28,319 [INFO] [文案] 正在生成英文文案...
+2026-08-16 17:25:44,495 [INFO]   已保存: product_description_en.txt (4168 字符)
+2026-08-16 17:25:44,495 [INFO] [文案] 正在生成韩文文案...
+2026-08-16 17:27:09,712 [INFO]   已保存: product_description_ko.txt (1516 字符)
+2026-08-16 17:27:09,712 [INFO] [文案] 正在生成葡萄牙文文案...
+2026-08-16 17:28:25,584 [INFO]   已保存: product_description_pt.txt (2007 字符)
+2026-08-16 17:28:25,585 [INFO] [图片] 生成 main_image.png
+2026-08-16 17:29:17,456 [INFO]   下载 -> main_image.png
+2026-08-16 17:29:18,361 [INFO]   完成: 1,365,930 bytes
+2026-08-16 17:29:18,361 [INFO] [图片] 生成 detail_image_1.png
+2026-08-16 17:30:09,828 [INFO]   下载 -> detail_image_1.png
+2026-08-16 17:30:10,902 [INFO]   完成: 1,185,928 bytes
+2026-08-16 17:30:10,902 [INFO] [图片] 生成 detail_image_2.png
+2026-08-16 17:31:18,698 [INFO]   下载 -> detail_image_2.png
+2026-08-16 17:31:19,300 [INFO]   完成: 1,095,034 bytes
+2026-08-16 17:31:19,300 [INFO] [图片] 生成 detail_image_3.png
+2026-08-16 17:36:19,512 [ERROR]   detail_image_3.png 失败: The read operation timed out
+2026-08-16 17:36:22,512 [INFO] [图片] 生成 detail_image_3.png（第2次重试·简化提示词）
+2026-08-16 17:37:17,638 [INFO]   下载 -> detail_image_3.png
+2026-08-16 17:37:18,630 [INFO]   完成: 1,872,024 bytes
+2026-08-16 17:37:18,630 [INFO] [图片] 生成 detail_image_4.png
+2026-08-16 17:38:08,055 [INFO]   下载 -> detail_image_4.png
+2026-08-16 17:38:08,811 [INFO]   完成: 1,615,043 bytes
+2026-08-16 17:38:08,811 [INFO] [图片] 生成 detail_image_5.png
+2026-08-16 17:39:09,152 [INFO]   下载 -> detail_image_5.png
+2026-08-16 17:39:09,818 [INFO]   完成: 1,714,420 bytes
+2026-08-16 17:39:09,819 [INFO] [视频] 提交视频生成任务...
+2026-08-16 17:39:10,024 [INFO]   任务已提交: 783c590e-a6e6-4c...
+2026-08-16 17:39:10,215 [INFO]   轮询 783c590e-a6e6-4c... 状态=RUNNING (0s)
+2026-08-16 17:39:20,423 [INFO]   轮询 783c590e-a6e6-4c... 状态=RUNNING (10s)
+2026-08-16 17:39:30,617 [INFO]   轮询 783c590e-a6e6-4c... 状态=RUNNING (20s)
+2026-08-16 17:39:40,823 [INFO]   轮询 783c590e-a6e6-4c... 状态=RUNNING (30s)
+2026-08-16 17:39:51,054 [INFO]   轮询 783c590e-a6e6-4c... 状态=RUNNING (40s)
+2026-08-16 17:40:01,250 [INFO]   轮询 783c590e-a6e6-4c... 状态=RUNNING (50s)
+2026-08-16 17:40:16,588 [INFO]   轮询 783c590e-a6e6-4c... 状态=RUNNING (60s)
+2026-08-16 17:40:26,922 [INFO]   轮询 783c590e-a6e6-4c... 状态=RUNNING (70s)
+2026-08-16 17:40:37,103 [INFO]   轮询 783c590e-a6e6-4c... 状态=RUNNING (80s)
+2026-08-16 17:40:47,416 [INFO]   轮询 783c590e-a6e6-4c... 状态=RUNNING (90s)
+2026-08-16 17:40:57,700 [INFO]   轮询 783c590e-a6e6-4c... 状态=RUNNING (100s)
+2026-08-16 17:41:09,511 [INFO]   轮询 783c590e-a6e6-4c... 状态=RUNNING (110s)
+2026-08-16 17:41:19,785 [INFO]   轮询 783c590e-a6e6-4c... 状态=SUCCEEDED (120s)
+2026-08-16 17:41:19,785 [INFO]   下载 -> product_video.mp4
+2026-08-16 17:41:21,362 [INFO]   完成: 3,800,416 bytes
+2026-08-16 17:41:21,362 [INFO] [策略] 已保存: /tmp/test_output3/strategy_document.txt
+2026-08-16 17:41:21,362 [INFO] ============================================================
+2026-08-16 17:41:21,363 [INFO] 全部任务完成！输出文件清单：
+2026-08-16 17:41:21,363 [INFO]   detail_image_1.png                     1,185,928 bytes
+2026-08-16 17:41:21,363 [INFO]   detail_image_2.png                     1,095,034 bytes
+2026-08-16 17:41:21,363 [INFO]   detail_image_3.png                     1,872,024 bytes
+2026-08-16 17:41:21,363 [INFO]   detail_image_4.png                     1,615,043 bytes
+2026-08-16 17:41:21,363 [INFO]   detail_image_5.png                     1,714,420 bytes
+2026-08-16 17:41:21,363 [INFO]   main_image.png                         1,365,930 bytes
+2026-08-16 17:41:21,363 [INFO]   product_description_en.txt                 4,192 bytes
+2026-08-16 17:41:21,363 [INFO]   product_description_ko.txt                 3,289 bytes
+2026-08-16 17:41:21,363 [INFO]   product_description_pt.txt                 2,044 bytes
+2026-08-16 17:41:21,363 [INFO]   product_video.mp4                      3,800,416 bytes
+2026-08-16 17:41:21,363 [INFO]   strategy_document.txt                      4,222 bytes
+2026-08-16 17:41:21,363 [INFO] ============================================================
+2026-08-16 17:41:21,364 [INFO] 全部 11 项交付物齐备 ✓
+2026-08-16 17:42:51,836 [INFO]   读取成功: /root/workspace/test0607/testabroad/task_data/Task_Data/Data_for_Users(2)/clothing_attributes.json
+2026-08-16 17:42:51,851 [INFO]   读取成功: /root/workspace/test0607/testabroad/task_data/Task_Data/Data_for_Users(2)/clothing_categories.json
+2026-08-16 17:42:51,853 [INFO]   额外文件: /root/workspace/test0607/testabroad/task_data/Task_Data/Data_for_Users(2)/product_info/product_5681480836479.json
+2026-08-16 17:42:51,854 [INFO]   额外文件: /root/workspace/test0607/testabroad/task_data/Task_Data/Data_for_Users(2)/product_info/product_3887087154767.json
+2026-08-16 17:42:51,855 [INFO]   额外文件: /root/workspace/test0607/testabroad/task_data/Task_Data/Data_for_Users(2)/product_info/product_8822221153828.json
+2026-08-16 17:42:51,856 [INFO]   额外文件: /root/workspace/test0607/testabroad/task_data/Task_Data/Data_for_Users(2)/product_info/product_6837006744133.json
+2026-08-16 17:42:51,857 [INFO]   额外文件: /root/workspace/test0607/testabroad/task_data/Task_Data/Data_for_Users(2)/product_info/product_8409262509816.json
+2026-08-16 17:42:51,858 [INFO]   额外文件: /root/workspace/test0607/testabroad/task_data/Task_Data/Data_for_Users(2)/product_info/product_9451226053560.json
+2026-08-16 17:42:51,858 [INFO]   额外文件: /root/workspace/test0607/testabroad/task_data/Task_Data/Data_for_Users(2)/product_info/product_6786311895552.json
+2026-08-16 17:42:51,859 [INFO]   额外文件: /root/workspace/test0607/testabroad/task_data/Task_Data/Data_for_Users(2)/product_info/product_5758364264251.json
+2026-08-16 17:42:51,860 [INFO]   额外文件: /root/workspace/test0607/testabroad/task_data/Task_Data/Data_for_Users(2)/product_info/product_9493156931235.json
+2026-08-16 17:42:51,861 [INFO]   额外文件: /root/workspace/test0607/testabroad/task_data/Task_Data/Data_for_Users(2)/product_info/product_5977010166484.json
+2026-08-16 17:42:51,863 [INFO]   额外文件: /root/workspace/test0607/testabroad/task_data/Task_Data/Data_for_Users(2)/product_info/product_8688570444629.json
+2026-08-16 17:42:51,863 [INFO]   读取成功: /tmp/task_input/product_info/product_basic.json
+2026-08-16 17:42:51,886 [INFO]   读取成功: /tmp/task_input/clothing_attributes.json
+2026-08-16 17:42:51,900 [INFO]   读取成功: /tmp/task_input/clothing_categories.json
+2026-08-16 17:42:51,902 [INFO]   额外文件: /tmp/task_input/product_info/product_9493156931235.json
+2026-08-16 17:42:51,902 [INFO]   额外文件: /tmp/task_input/product_info/product_9451226053560.json
+2026-08-16 17:42:51,903 [INFO]   额外文件: /tmp/task_input/product_info/product_8822221153828.json
+2026-08-16 17:42:51,904 [INFO]   额外文件: /tmp/task_input/product_info/product_8688570444629.json
+2026-08-16 17:42:51,905 [INFO]   额外文件: /tmp/task_input/product_info/product_8409262509816.json
+2026-08-16 17:42:51,905 [INFO]   额外文件: /tmp/task_input/product_info/product_6837006744133.json
+2026-08-16 17:42:51,905 [INFO]   额外文件: /tmp/task_input/product_info/product_6786311895552.json
+2026-08-16 17:42:51,906 [INFO]   额外文件: /tmp/task_input/product_info/product_5977010166484.json
+2026-08-16 17:42:51,906 [INFO]   额外文件: /tmp/task_input/product_info/product_5758364264251.json
+2026-08-16 17:42:51,907 [INFO]   额外文件: /tmp/task_input/product_info/product_5681480836479.json
+2026-08-16 17:42:51,907 [INFO]   额外文件: /tmp/task_input/product_info/product_3887087154767.json
+2026-08-16 17:42:51,908 [INFO]   额外文件: /tmp/task_input/product_info/product_basic.json
